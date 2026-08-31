@@ -14,7 +14,7 @@ This repository is not affiliated with the author; it's a practical restatement 
 
 - `SKILL.md` — the skill definition Claude Code loads: the two guiding principles, directory layout, lab notebook format, driver script rules, error handling, and a review checklist for auditing an existing project.
 - `scripts/scaffold_project.py` — generates a new project skeleton (`data/ results/ src/ bin/ doc/`), or adds a new dated experiment directory to an existing project.
-- `assets/` — templates used by the skill and scaffold script: a lab notebook entry format, a driver-script (`runall`) skeleton, a data-directory README template, and a starter `.gitignore`.
+- `assets/` — templates used by the skill and scaffold script: a lab notebook entry format, `runall`/`summarize` driver-script skeletons, a data-directory README template, and a starter `.gitignore`.
 
 ## Installing
 
@@ -31,4 +31,11 @@ git clone https://github.com/dmkv1/compbio-project-organizer.git .claude/skills/
 ```
 
 Claude Code will pick it up automatically and invoke it when a conversation touches computational-biology project organization.
+
+## License
+
+The original material here — `SKILL.md`'s wording, the scaffold script, and the templates — is
+MIT licensed (see [LICENSE](LICENSE)). The directory layout, rules, and principles they describe
+are drawn from Noble WS (2009), licensed CC BY 4.0 by PLOS; the MIT grant covers this repo's
+expression of that guidance, not the underlying methodology or the paper itself.
 

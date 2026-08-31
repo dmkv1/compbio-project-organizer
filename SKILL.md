@@ -7,7 +7,9 @@ description: Guidance and tooling for organizing computational biology / bioinfo
 
 Practical scaffolding and review guidance for structuring computational biology / bioinformatics
 projects, distilled from Noble WS (2009), *A Quick Guide to Organizing Computational Biology
-Projects*, PLoS Comput Biol 5(7): e1000424.
+Projects*, PLoS Comput Biol 5(7): e1000424, https://doi.org/10.1371/journal.pcbi.1000424
+(CC BY 4.0). The rules and structure below are the paper's; the wording, templates, and scripts
+here are this repo's own.
 
 ## The two principles behind everything here
 
@@ -77,7 +79,10 @@ keep it flat until it grows unwieldy, then introduce structure. That structure s
 
 Every directory under `data/` should contain a **README** stating who downloaded/generated the
 data, from what URL or source, and on what date — this is often the only provenance record that
-will ever exist for that dataset.
+will ever exist for that dataset. For very large or frequently-updated datasets a single README
+stops being enough — treat it as a minimum, and reach for more systematic provenance tracking
+(versioned manifests, a data pipeline that records its own inputs) as the dataset's size or churn
+grows.
 
 Use `scripts/scaffold_project.py` to generate this skeleton (including READMEs and a `.gitignore`)
 in one step rather than creating it by hand — see "Scaffolding a new project" below.
@@ -95,6 +100,8 @@ Maintain one chronologically-ordered lab notebook per project, living at the roo
   later reader (including future-you).
 - Optionally captures relevant conversation notes or emails, so the notebook is a complete record
   of how the project evolved, not just of the commands run.
+- Is written more verbosely, with less jargon, when the audience includes wet-lab collaborators
+  rather than only other computational people — err toward over-explaining for that reader.
 
 If the user is collaborating with others, suggest putting the notebook somewhere shareable
 (a private wiki, a rendered HTML/markdown page, a hosted doc) rather than treating a plain local
@@ -127,9 +134,12 @@ holds every operational detail needed to reproduce it exactly. Apply these rules
 For longer-running experiments, split into two scripts: `runall` (does the work, calling
 `summarize` as its final step) and `summarize` (produces a plot/table/HTML page reporting
 progress, and should degrade gracefully on a *partially* completed run so you can check in on
-long jobs). `assets/runall_template.sh` demonstrates this shape — adapt it to the user's actual
-language/tooling (shell, Python, R, Snakemake/Nextflow, etc.) rather than forcing shell where it
-doesn't fit; the six rules above are the point, not the specific syntax.
+long jobs). `assets/runall_template.sh` and `assets/summarize_template.sh` demonstrate this shape
+— adapt them to the user's actual language/tooling (shell, Python, R, Snakemake/Nextflow, etc.)
+rather than forcing shell where it doesn't fit; the six rules above are the point, not the
+specific syntax. Start with the simplest tool that can do the job — often shell — and move to a
+more capable language only once the logic actually demands it; don't reach for machinery the
+experiment doesn't need yet.
 
 ## Handling and preventing errors
 
@@ -175,8 +185,11 @@ Two habits matter more than the tool choice:
   frequently-regenerated outputs are not.
 
 `scaffold_project.py` writes a starter `.gitignore` (from `assets/gitignore_template`) that
-excludes `results/` outputs and `bin/` binaries by pattern while keeping `data/` READMEs and
-`results/notebook.md` tracked — adjust it to the user's actual toolchain.
+excludes `results/` outputs by pattern (with `results/notebook.md` allow-listed back in) and
+`bin/` binaries, plus a commented-out block to exclude `data/` entirely except its READMEs —
+uncomment that block for projects whose raw data is large or frequently regenerated; leave it
+off (the default) for projects where `data/` holds small, static files worth tracking directly.
+Adjust the whole file to the user's actual toolchain.
 
 ## Scaffolding a new project
 
@@ -197,8 +210,9 @@ To scaffold just a new dated experiment inside an existing project:
 python "scripts/scaffold_project.py" --experiment --root <path/to/existing/project> [--topic <short-topic>]
 ```
 
-This adds `data/<YYYY-MM-DD>[-topic]/` and `results/<YYYY-MM-DD>[-topic]/` (with a `runall` stub
-copied from `assets/runall_template.sh`) without touching the rest of the project.
+This adds `data/<YYYY-MM-DD>[-topic]/` and `results/<YYYY-MM-DD>[-topic]/` (with `runall` and
+`summarize` stubs copied from `assets/runall_template.sh` and `assets/summarize_template.sh`)
+without touching the rest of the project.
 
 ## Reviewing an existing project
 

@@ -92,14 +92,15 @@ def scaffold_experiment(root: Path, topic: str | None) -> None:
     readme_template = (ASSETS / "readme_data_template.md").read_text(encoding="utf-8")
     write_if_absent(data_dir / "README.md", readme_template)
 
-    runall_src = ASSETS / "runall_template.sh"
-    runall_dst = results_dir / "runall"
-    if runall_dst.exists():
-        print(f"[skip] {runall_dst} already exists")
-    else:
-        shutil.copyfile(runall_src, runall_dst)
-        runall_dst.chmod(0o755)
-        print(f"[create] {runall_dst}")
+    for template_name, dst_name in (("runall_template.sh", "runall"), ("summarize_template.sh", "summarize")):
+        src = ASSETS / template_name
+        dst = results_dir / dst_name
+        if dst.exists():
+            print(f"[skip] {dst} already exists")
+        else:
+            shutil.copyfile(src, dst)
+            dst.chmod(0o755)
+            print(f"[create] {dst}")
 
     print(f"\nNew experiment directories:\n  {data_dir}\n  {results_dir}")
     print("Edit results/*/runall's paths/steps for this experiment, and add an entry to "
