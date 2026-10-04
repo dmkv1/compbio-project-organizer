@@ -7,6 +7,9 @@
 # than failing outright, so a long job can be checked in on without waiting for it to finish.
 set -uo pipefail
 
+# Run from this script's own directory so relative paths resolve from anywhere.
+cd "$(dirname "$0")"
+
 OUT_DIR="."
 SPLIT_DIRS=(split1 split2 split3)
 
