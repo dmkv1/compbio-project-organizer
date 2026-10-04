@@ -186,7 +186,7 @@ Two habits matter more than the tool choice:
 
 `scaffold_project.py` writes a starter `.gitignore` (from `assets/gitignore_template`) that
 excludes `results/` outputs by pattern (with `results/notebook.md` allow-listed back in) and
-`bin/` binaries, plus a commented-out block to exclude `data/` entirely except its READMEs —
+`bin/` binaries, and large bioinformatics formats (`*.h5ad`, `*.bam`, `*.fastq.gz`, ...), plus a commented-out block to exclude `data/` entirely except its READMEs —
 uncomment that block for projects whose raw data is large or frequently regenerated; leave it
 off (the default) for projects where `data/` holds small, static files worth tracking directly.
 Adjust the whole file to the user's actual toolchain.

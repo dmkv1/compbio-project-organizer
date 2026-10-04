@@ -15,8 +15,12 @@
 # Abort immediately on any error or unset variable, and on failures inside a pipeline.
 set -euo pipefail
 
+# Run from this script's own directory so the relative paths below resolve no matter where
+# the script is invoked from.
+cd "$(dirname "$0")"
+
 # --- centralize every path used by this experiment (rule 4) -----------------------------------
-PROJECT_ROOT="../../.."                 # relative to this script's directory (rule 5)
+PROJECT_ROOT="../.."                    # this script lives in <project>/results/<YYYY-MM-DD>/ (rule 5)
 DATA_DIR="$PROJECT_ROOT/data/<YYYY-MM-DD>"
 BIN_DIR="$PROJECT_ROOT/bin"
 OUT_DIR="."                             # this experiment's own results/<YYYY-MM-DD>/ directory
@@ -44,4 +48,4 @@ for split in "${SPLIT_DIRS[@]}"; do
 done
 
 # --- always finish by summarizing progress, even on a partial run -----------------------------
-"$(dirname "$0")/summarize"
+./summarize
